@@ -1,0 +1,26 @@
+{
+  "name": "busgres",
+  "version": "1.0.0",
+  "description": "Busgres is an NPM package for saving messages sent to Azure Service Bus into a Postgres database.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/rtasalem/busgres"
+  },
+  "keywords": [
+    "azure",
+    "service bus",
+    "postgres"
+  ],
+  "authors": [
+    "Rana Salem github.com/rtasalem"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@azure/service-bus": "^7.9.4",
+    "pg": "^8.11.5"
+  }
+}
