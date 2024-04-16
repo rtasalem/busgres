@@ -25,7 +25,6 @@
 # Icon must end with two \r
 Icon
 
-
 # Thumbnails
 ._*
 
@@ -233,5 +232,8 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# Other
+test-output
 
 # End of https://www.toptal.com/developers/gitignore/api/node,visualstudiocode,macos,windows,linux
