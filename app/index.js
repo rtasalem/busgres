@@ -1,5 +1,5 @@
-const { BusgresDriver } = require('./busgres-driver')
+const { BusgresClient } = require('./busgres-client')
 
 module.exports = {
-  BusgresDriver
+  BusgresClient
 }
