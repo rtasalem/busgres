@@ -2,17 +2,14 @@ const { ServiceBusClient } = require('@azure/service-bus')
 const { Client } = require('pg')
 
 class BusgresDriver {
-  constructor(
-    serviceBusConnectionString,
-    postgresConfig,
-    entityName,
-    isTopic = false
-  ) {
-    this.serviceBusClient = new ServiceBusClient(serviceBusConnectionString)
-    this.postgresClient = new Client(postgresConfig)
+  constructor(sbConfig, pgConfig, entityName) {
+    this.sbConfig = new ServiceBusClient(sbConfig)
+    this.pgConfig = new Client(pgConfig)
     this.entityName = entityName
-    this.isTopic = isTopic
+  }
+
+  async init() {
+    await this.pgConfig.connect()
+    this.sbReceiver = this.sbConfig.createReceiver(this.entityName)
   }
 }
-
-module.exports = BusgresDriver
