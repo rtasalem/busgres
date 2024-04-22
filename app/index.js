@@ -1,1 +1,5 @@
-// for exporting modules
+const { BusgresClient } = require('./busgres-client')
+
+module.exports = {
+  BusgresClient
+}
