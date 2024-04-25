@@ -1,7 +1,7 @@
 {
   "name": "busgres",
-  "version": "1.0.0",
-  "description": "Busgres is an NPM package for saving messages sent to Azure Service Bus into a Postgres database.",
+  "version": "1.0.1",
+  "description": "Busgres is an NPM package for receiving messages from Service Bus and saving them into a PostgreSQL database.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
