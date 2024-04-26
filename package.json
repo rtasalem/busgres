@@ -8,15 +8,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "github.com/rtasalem/busgres"
+    "url": "https://github.com/rtasalem/busgres"
   },
+  "authors": [
+    "Rana Salem (github.com/rtasalem)"
+  ],
+  "homepage": "https://github.com/rtasalem/busgres",
   "keywords": [
     "azure",
     "service bus",
     "postgres"
-  ],
-  "authors": [
-    "Rana Salem (github.com/rtasalem)"
   ],
   "license": "MIT",
   "dependencies": {

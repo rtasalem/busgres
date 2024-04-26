@@ -2,11 +2,10 @@ const { ServiceBusClient } = require('@azure/service-bus')
 const { Client } = require('pg')
 
 class BusgresClient {
-  constructor(sbClient, sbConfig, pgClient) {
-    this.sbClient = new ServiceBusClient(sbClient)
+  constructor(sbConnectionString, sbConfig, pgClient) {
+    this.sbClient = new ServiceBusClient(sbConnectionString)
     this.sbConfig = sbConfig
-    this.receiver = null
-    this.sender = null
+    this.receiver = sbClient.createReceiver(sbConfig)
     this.pgClient = new Client(pgClient)
   }
 
@@ -14,8 +13,7 @@ class BusgresClient {
     await this.pgClient.connect()
   }
 
-  async receiveMessages() {
-    const receiver = this.sbClient.createReceiver(this.sbConfig)
+  async receiveMessage() {
     receiver.subscribe({
       processMessage: async (message) => {
         console.log(
@@ -25,7 +23,10 @@ class BusgresClient {
         await receiver.completeMessage(message)
       },
       processError: async (error) => {
-        console.error('Error occurred:', error)
+        console.error(
+          'Error occurred while receiving from Service Bus: ',
+          error
+        )
       }
     })
   }
@@ -35,7 +36,10 @@ class BusgresClient {
       const query = 'INSERT INTO messages (content) VALUES ($1)'
       const values = [message.body]
       await this.pgClient.query(query, values)
-      console.log('Message saved to the database')
+      console.log(
+        'The following message has been saved to the database: ',
+        message.body
+      )
     } catch (error) {
       console.error('Error saving message to the database:', error)
     }
