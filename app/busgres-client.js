@@ -5,11 +5,11 @@ class BusgresClient {
   constructor(sbConnectionString, sbConfig, pgClient) {
     this.sbClient = new ServiceBusClient(sbConnectionString)
     this.sbConfig = sbConfig
-    this.receiver = sbClient.createReceiver(sbConfig)
+    this.receiver = this.sbClient.createReceiver(sbConfig)
     this.pgClient = new Client(pgClient)
   }
 
-  async init() {
+  async connect() {
     await this.pgClient.connect()
   }
 
