@@ -2,7 +2,7 @@ const { ServiceBusClient } = require('@azure/service-bus')
 const { Client } = require('pg')
 
 class BusgresClient {
-  constructor(sbConfig, pgClient) {
+  constructor(sbConnectionString, sbConfig, pgClient) {
     this.sbConnectionString = sbConnectionString
     this.sbConfig = sbConfig
     this.pgClient = new Client(pgClient)
