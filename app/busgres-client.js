@@ -21,7 +21,7 @@ class BusgresClient {
           'The following message was received from Service Bus:',
           message.body
         )
-        await receiver.completeMessage(message)
+        await this.receiver.completeMessage(message)
       },
       processError: async (error) => {
         console.error(
