@@ -3,9 +3,8 @@ const { Client } = require('pg')
 
 class BusgresClient {
   constructor(sbConnectionString, sbConfig, pgClient) {
-    this.sbClient = new ServiceBusClient(sbConnectionString)
+    this.sbConnectionString = sbConnectionString
     this.sbConfig = sbConfig
-    this.receiver = this.sbClient.createReceiver(sbConfig)
     this.pgClient = new Client(pgClient)
   }
 
@@ -14,6 +13,8 @@ class BusgresClient {
   }
 
   async receiveMessage() {
+    this.sbClient = new ServiceBusClient(this.sbConnectionString)
+    this.receiver = this.sbClient.createReceiver(this.sbConfig)
     receiver.subscribe({
       processMessage: async (message) => {
         console.log(
