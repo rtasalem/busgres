@@ -2,7 +2,7 @@ const { ServiceBusClient } = require('@azure/service-bus')
 const { Client } = require('pg')
 
 class BusgresClient {
-  constructor(sbConnectionString, sbConfig, pgClient) {
+  constructor(sbConfig, pgClient) {
     this.sbConnectionString = sbConnectionString
     this.sbConfig = sbConfig
     this.pgClient = new Client(pgClient)
@@ -15,6 +15,7 @@ class BusgresClient {
   async receiveMessage() {
     this.sbClient = new ServiceBusClient(this.sbConnectionString)
     this.receiver = this.sbClient.createReceiver(this.sbConfig)
+
     this.receiver.subscribe({
       processMessage: async (message) => {
         console.log(
