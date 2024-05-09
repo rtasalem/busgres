@@ -15,7 +15,7 @@ class BusgresClient {
   async receiveMessage() {
     this.sbClient = new ServiceBusClient(this.sbConnectionString)
     this.receiver = this.sbClient.createReceiver(this.sbConfig)
-    receiver.subscribe({
+    this.receiver.subscribe({
       processMessage: async (message) => {
         console.log(
           'The following message was received from Service Bus:',
