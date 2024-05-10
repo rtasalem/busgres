@@ -2,9 +2,9 @@ const { ServiceBusClient } = require('@azure/service-bus')
 const { Client } = require('pg')
 
 class BusgresClient {
-  constructor(sbConnectionString, sbConfig, pgClient) {
+  constructor(sbConnectionString, sbEntity, pgClient) {
     this.sbConnectionString = sbConnectionString
-    this.sbConfig = sbConfig
+    this.sbEntity = sbEntity
     this.pgClient = new Client(pgClient)
   }
 
@@ -12,7 +12,7 @@ class BusgresClient {
     await this.pgClient.connect()
   }
 
-  async saveMessageToDatabase(tableName, columnNames, message) {
+  async saveMessage(tableName, columnNames, message) {
     try {
       const messageContent = message.body
       const columns = columnNames
@@ -36,7 +36,7 @@ class BusgresClient {
 
   async receiveMessage(tableName, columnNames) {
     this.sbClient = new ServiceBusClient(this.sbConnectionString)
-    this.receiver = this.sbClient.createReceiver(this.sbConfig)
+    this.receiver = this.sbClient.createReceiver(this.sbEntity)
 
     this.receiver.subscribe({
       processMessage: async (message) => {
@@ -44,7 +44,7 @@ class BusgresClient {
           'The following message was received from Service Bus:',
           message.body
         )
-        await this.saveMessageToDatabase(tableName, columnNames, message)
+        await this.saveMessage(tableName, columnNames, message)
         await this.receiver.completeMessage(message)
       },
       processError: async (error) => {
