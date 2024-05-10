@@ -26,7 +26,7 @@ class BusgresClient {
       },
       processError: async (error) => {
         console.error(
-          'Error occurred while receiving from Service Bus: ',
+          'Error occurred while receiving message from Service Bus:',
           error
         )
       }
@@ -36,10 +36,10 @@ class BusgresClient {
   async saveMessageToDatabase(message) {
     try {
       const query = 'INSERT INTO messages (content) VALUES ($1)'
-      const values = [message.body]
+      const values = [message]
       await this.pgClient.query(query, values)
       console.log(
-        'The following message has been saved to the database: ',
+        'The following message has been saved to the database:',
         message.body
       )
     } catch (error) {
@@ -47,8 +47,9 @@ class BusgresClient {
     }
   }
 
-  async close() {
+  async disconnect() {
     await this.pgClient.end()
+    await this.receiver.close()
     await this.sbClient.close()
   }
 }
