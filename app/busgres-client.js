@@ -33,10 +33,8 @@ class BusgresClient {
     })
   }
 
-  async saveMessageToDatabase(tableName, columnName, message) {
+  async saveMessageToDatabase(tableName, columnNames, message) {
     try {
-      // const query = 'INSERT INTO messages (content) VALUES ($1)'
-      // const values = [message]
       const columns = columnNames
         .map((column, index) => `$${index + 1}`)
         .join(', ')
