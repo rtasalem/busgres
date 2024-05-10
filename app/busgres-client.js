@@ -12,27 +12,6 @@ class BusgresClient {
     await this.pgClient.connect()
   }
 
-  async receiveMessage() {
-    this.sbClient = new ServiceBusClient(this.sbConnectionString)
-    this.receiver = this.sbClient.createReceiver(this.sbConfig)
-
-    this.receiver.subscribe({
-      processMessage: async (message) => {
-        console.log(
-          'The following message was received from Service Bus:',
-          message.body
-        )
-        await this.receiver.completeMessage(message)
-      },
-      processError: async (error) => {
-        console.error(
-          'Error occurred while receiving message from Service Bus:',
-          error
-        )
-      }
-    })
-  }
-
   async saveMessageToDatabase(tableName, columnNames, message) {
     try {
       const columns = columnNames
@@ -52,6 +31,28 @@ class BusgresClient {
     } catch (error) {
       console.error('Error saving message to the database:', error)
     }
+  }
+
+  async receiveMessage() {
+    this.sbClient = new ServiceBusClient(this.sbConnectionString)
+    this.receiver = this.sbClient.createReceiver(this.sbConfig)
+
+    this.receiver.subscribe({
+      processMessage: async (message) => {
+        console.log(
+          'The following message was received from Service Bus:',
+          message.body
+        )
+        await this.saveMessageToDatabase(tableName, columnNames, message)
+        await this.receiver.completeMessage(message)
+      },
+      processError: async (error) => {
+        console.error(
+          'Error occurred while receiving message from Service Bus:',
+          error
+        )
+      }
+    })
   }
 
   async disconnect() {
