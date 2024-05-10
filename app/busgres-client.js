@@ -33,14 +33,23 @@ class BusgresClient {
     })
   }
 
-  async saveMessageToDatabase(message) {
+  async saveMessageToDatabase(tableName, columnName, message) {
     try {
-      const query = 'INSERT INTO messages (content) VALUES ($1)'
-      const values = [message]
+      // const query = 'INSERT INTO messages (content) VALUES ($1)'
+      // const values = [message]
+      const columns = columnNames
+        .map((column, index) => `$${index + 1}`)
+        .join(', ')
+      const query = `INSERT INTO ${tableName} (${columnNames.join(
+        ', '
+      )}) VALUES (${columns})`
+
+      const values = columnNames.map((column) => message[column])
+
       await this.pgClient.query(query, values)
       console.log(
         'The following message has been saved to the database:',
-        message.body
+        message
       )
     } catch (error) {
       console.error('Error saving message to the database:', error)
