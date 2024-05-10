@@ -14,6 +14,7 @@ class BusgresClient {
 
   async saveMessageToDatabase(tableName, columnNames, message) {
     try {
+      const messageContent = message.body
       const columns = columnNames
         .map((column, index) => `$${index + 1}`)
         .join(', ')
@@ -21,19 +22,19 @@ class BusgresClient {
         ', '
       )}) VALUES (${columns})`
 
-      const values = columnNames.map((column) => message[column])
+      const values = columnNames.map((column) => messageContent[column])
 
       await this.pgClient.query(query, values)
       console.log(
         'The following message has been saved to the database:',
-        message
+        messageContent
       )
     } catch (error) {
       console.error('Error saving message to the database:', error)
     }
   }
 
-  async receiveMessage() {
+  async receiveMessage(tableName, columnNames) {
     this.sbClient = new ServiceBusClient(this.sbConnectionString)
     this.receiver = this.sbClient.createReceiver(this.sbConfig)
 
