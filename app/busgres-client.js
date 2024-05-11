@@ -9,7 +9,11 @@ class BusgresClient {
   }
 
   async connect() {
-    await this.pgClient.connect()
+    try {
+      await this.pgClient.connect()
+    } catch (error) {
+      console.error('Error connecting to the database:', error)
+    }
   }
 
   async saveMessage(tableName, columnNames, message) {
@@ -57,9 +61,13 @@ class BusgresClient {
   }
 
   async disconnect() {
-    await this.pgClient.end()
-    await this.receiver.close()
-    await this.sbClient.close()
+    try {
+      await this.pgClient.end()
+      await this.receiver.close()
+      await this.sbClient.close()
+    } catch (error) {
+      console.error('Error disconnecting:', error)
+    }
   }
 }
 
