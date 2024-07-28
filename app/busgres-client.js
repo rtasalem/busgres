@@ -2,9 +2,11 @@ const { ServiceBusClient } = require('@azure/service-bus')
 const { Client } = require('pg')
 
 class BusgresClient {
-  constructor(sbConnectionString, sbEntity, pgClient) {
+  constructor(sbConnectionString, sbEntityName, sbEntityType, pgClient) {
     this.sbConnectionString = sbConnectionString
-    this.sbEntity = sbEntity
+    this.sbEntityName = sbEntityName
+    this.sbEntityType = sbEntityType
+    this.sbEntitySubscription = this.sbEntitySubscription || null
     this.pgClient = new Client(pgClient)
   }
 
@@ -41,6 +43,19 @@ class BusgresClient {
   async receiveMessage(tableName, columnNames) {
     this.sbClient = new ServiceBusClient(this.sbConnectionString)
     this.receiver = this.sbClient.createReceiver(this.sbEntity)
+
+    if (this.sbEntityType === 'queue') {
+      this.receiver = this.sbClient.createReceiver(this.sbEntityName)
+    } else if (this.sbEntityType === 'topic' && this.sbEntitySubscription) {
+      this.receiver = this.sbClient.createReceiver(
+        this.sbEntityName,
+        this.sbEntitySubscription
+      )
+    } else {
+      throw new Error(
+        'Invalid entity type (must be "queue" or "topic" OR missing subscription name for topic'
+      )
+    }
 
     this.receiver.subscribe({
       processMessage: async (message) => {
