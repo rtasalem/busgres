@@ -1,6 +1,6 @@
 # Busgres
 
-[Busgres](https://www.npmjs.com/package/busgres) is a Node.js package that will receieve a message from an Azure Service Bus queue and save it into a PostgreSQL database. It utilises the [`@azure/service-bus`](https://www.npmjs.com/package/@azure/service-bus) package for Service Bus integration and the [`pg` (node-postgres)](https://www.npmjs.com/package/pg) package for PostgreSQL connectivity.
+[Busgres](https://www.npmjs.com/package/busgres) is a Node.js package that will receieve a message from an Azure Service Bus queue or topic and save it into a PostgreSQL database. It utilises the [`@azure/service-bus`](https://www.npmjs.com/package/@azure/service-bus) package for Service Bus integration and the [`pg` (node-postgres)](https://www.npmjs.com/package/pg) package for PostgreSQL connectivity.
 
 ## Installation
 
@@ -11,13 +11,15 @@ npm i busgres
 ```
 
 ## Usage
+
 `BusgresClient` set-up & configuration:
+
 ```
 const { BusgresClient } = require('busgres`)
 
-const sbConnectionString = process.env.CONNECTION_STRING 
+const sbConnectionString = process.env.CONNECTION_STRING
 
-const sbEntity = process.env.QUEUE 
+const sbEntityName = process.env.QUEUE
 
 const pgClient = {
   user: process.env.USERNAME,
@@ -26,9 +28,11 @@ const pgClient = {
   port: process.env.PORT
 }
 
-const bgClient = new BusgresClient(sbConnectionString, sbEntity, pgClient)
+const bgClient = new BusgresClient(sbConnectionString, sbEntityName,, sbEntityType, sbEntitySubscription, pgClient)
 ```
+
 Connecting to `BusgresClient`:
+
 ```
 bgClient
   .connect()
@@ -51,25 +55,29 @@ bgClient
     )
   })
 ```
+
 The above example will confirm a connection has been established via the `BusgresClient` and will select all content from any table in the PostgreSQL database to then log it into the console (not necessary, just further confirms the PostgreSQL connection is active).<br><br>
 Receiving and saving messages via `receiveMessage`:
+
 ```
 const tableName = 'TABLE_NAME'
 const columnNames = ['COLUMN_NAME']
 
 bgClient.receiveMessage(tableName, columnNames)
 ```
+
 `tableName` and `columnNames` must be defined so that they can be passed into the `receieveMessage` function.<br><br>
 Disconnecting from `BusgresClient`:
+
 ```
 bgClient.disconnect()
 ```
-When called the connection to PostgreSQL will be terminated and will also close the Service Bus client & queue. Messages can no longer be received from Service Bus nor saved to the PostgreSQL database.
 
+When called the connection to PostgreSQL will be terminated and will also close the Service Bus client & queue. Messages can no longer be received from Service Bus nor saved to the PostgreSQL database.
 
 ## Configuration
 
-`BusgresClient` - Client that contains the configuration for both Azure Service Bus & PostgreSQL. Arguments passed into the constructor of the `BusgresClient` include the Service Bus connection string (`sbConnectionString`), Service Bus entity (`sbEntity`) i.e. name of the queue, and the PostgreSQL client configuration (`pgClient`).<br><br>
+`BusgresClient` - Client that contains the configuration for both Azure Service Bus & PostgreSQL. Arguments passed into the constructor of the `BusgresClient` include the Service Bus connection string (`sbConnectionString`), Service Bus entity (`sbEntityName`) i.e. name of the queue or topic, Service Bus entity type (either `'queue'` or `'topic'`), Service Bus entity subscription (name of the subscription if using topic), and the PostgreSQL client configuration (`pgClient`).<br><br>
 `connect` - When called will establish connection to the PostgreSQL database.<br><br>
 `saveMessage` & `receiveMessage` - Logic for inserting messages received from a Service Bus queue into a table within a PostgreSQL database.<br><br>
 `disconnect` - When called will terminate the connection to PostgreSQL and close the Service Bus client and entity.
