@@ -2,7 +2,7 @@ const { ServiceBusClient } = require('@azure/service-bus')
 const { Client } = require('pg')
 
 class BusgresClient {
-  constructor(sbConnectionString, sbEntityName, sbEntityType, sbEntitySubscription, pgClient) {
+  constructor (sbConnectionString, sbEntityName, sbEntityType, sbEntitySubscription, pgClient) {
     this.sbConnectionString = sbConnectionString
     this.sbEntityName = sbEntityName
     this.sbEntityType = sbEntityType
@@ -10,7 +10,7 @@ class BusgresClient {
     this.pgClient = new Client(pgClient)
   }
 
-  async connect() {
+  async connect () {
     try {
       await this.pgClient.connect()
     } catch (error) {
@@ -18,7 +18,7 @@ class BusgresClient {
     }
   }
 
-  async saveMessage(tableName, columnNames, message) {
+  async saveMessage (tableName, columnNames, message) {
     try {
       const messageContent = message.body
       const columns = columnNames
@@ -40,7 +40,7 @@ class BusgresClient {
     }
   }
 
-  async receiveMessage(tableName, columnNames) {
+  async receiveMessage (tableName, columnNames) {
     this.sbClient = new ServiceBusClient(this.sbConnectionString)
     this.receiver = this.sbClient.createReceiver(this.sbEntity)
 
@@ -75,7 +75,7 @@ class BusgresClient {
     })
   }
 
-  async disconnect() {
+  async disconnect () {
     try {
       await this.pgClient.end()
       await this.receiver.close()
