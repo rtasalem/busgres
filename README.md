@@ -20,6 +20,7 @@ const { BusgresClient } = require('busgres`)
 const sbConnectionString = process.env.CONNECTION_STRING
 
 const sbEntityName = process.env.QUEUE
+const sbEntityType = 'queue'
 
 const pgClient = {
   user: process.env.USERNAME,
@@ -28,8 +29,9 @@ const pgClient = {
   port: process.env.PORT
 }
 
-const bgClient = new BusgresClient(sbConnectionString, sbEntityName,, sbEntityType, sbEntitySubscription, pgClient)
+const bgClient = new BusgresClient(sbConnectionString, sbEntityName, sbEntityType, pgClient)
 ```
+NOTE: If using topics, provide the topic name for `sbEntityName` in place of a queue name. Additionally, ensure `sbEntityType` is set to `'topic'` and that a value for `sbEntitySubscription` is also provided.
 
 Connecting to `BusgresClient`:
 
