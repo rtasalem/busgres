@@ -25,6 +25,7 @@
     "pg": "^8.11.5"
   },
   "devDependencies": {
+    "standard": "17.1.0",
     "standard-version": "9.5.0"
   }
 }
