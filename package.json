@@ -23,5 +23,8 @@
   "dependencies": {
     "@azure/service-bus": "^7.9.4",
     "pg": "^8.11.5"
+  },
+  "devDependencies": {
+    "standard-version": "9.5.0"
   }
 }

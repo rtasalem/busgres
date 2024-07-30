@@ -102,6 +102,7 @@ This package has a total of 2 dependencies on the following:
 
 - [`@azure/service-bus`](https://www.npmjs.com/package/@azure/service-bus)
 - [`pg`](https://www.npmjs.com/package/pg)
+- [`standard-version`](https://www.npmjs.com/package/standard-version)
 
 ## Author
 
