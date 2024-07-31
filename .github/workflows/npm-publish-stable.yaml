@@ -8,6 +8,10 @@ on:
     branches: 
       - main
 
+concurrency:
+  group: npm-publish
+  cancel-in-progress: true
+
 jobs:
   publish:
     runs-on: ubuntu-latest
