@@ -75,13 +75,13 @@ Disconnecting from `BusgresClient`:
 bgClient.disconnect()
 ```
 
-When called the connection to PostgreSQL will be terminated and will also close the Service Bus client & queue. Messages can no longer be received from Service Bus nor saved to the PostgreSQL database.
+When called the connection to PostgreSQL will be terminated and will also close the Service Bus client & receiver. Messages can no longer be received from Service Bus nor saved to the PostgreSQL database.
 
 ## Configuration
 
 `BusgresClient` - Client that contains the configuration for both Azure Service Bus & PostgreSQL. Arguments passed into the constructor of the `BusgresClient` include the Service Bus connection string (`sbConnectionString`), Service Bus entity (`sbEntityName`) i.e. name of the queue or topic, Service Bus entity type (either `'queue'` or `'topic'`), Service Bus entity subscription (name of the subscription if using topic), and the PostgreSQL client configuration (`pgClient`).<br><br>
 `connect` - When called will establish connection to the PostgreSQL database.<br><br>
-`saveMessage` & `receiveMessage` - Logic for inserting messages received from a Service Bus queue into a table within a PostgreSQL database.<br><br>
+`saveMessage` & `receiveMessage` - Logic for inserting messages received from a Service Bus entity into a table within a PostgreSQL database.<br><br>
 `disconnect` - When called will terminate the connection to PostgreSQL and close the Service Bus client and entity.
 
 ## Demo
