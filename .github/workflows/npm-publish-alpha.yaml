@@ -1,4 +1,4 @@
-name: NPM Publish Alpha
+name: Busgres NPM Publish Alpha Version
 
 on:
   push:

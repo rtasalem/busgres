@@ -1,4 +1,4 @@
-name: NPM Publish Stable
+name: Busgres NPM Publish Stable Version
 
 on:
   push:
@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Git user
+      - name: Set up Git User
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
@@ -32,10 +32,16 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
 
-      - name: Bump version
+      - name: Bump Version to NPM
         run: |
           npx standard-version
           echo "New version: $(node -p "require('./package.json').version")"
+
+      - name: Commit Version Bump to GitHub Repository
+        run: |
+          git add package.json CHANGELOG.md
+          git commit -m "chore(release): $(node -p "require('./package.json').version")"
+          git push origin main
       
       - name: Authenticate to NPM
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_ACCESS_TOKEN }}" > ~/.npmrc
