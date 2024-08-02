@@ -90,7 +90,7 @@
 //   BusgresClient
 // }
 
-cconst { ServiceBusClient } = require('@azure/service-bus')
+const { ServiceBusClient } = require('@azure/service-bus')
 const { Client } = require('pg')
 
 const BusgresClient = (sbConnectionString, sbEntityName, sbEntityType, sbEntitySubscription, pgConfig) => {
