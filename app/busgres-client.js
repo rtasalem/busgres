@@ -173,6 +173,13 @@ const BusgresClient = async (sbConnectionString, sbEntityName, sbEntityType, sbE
       throw new Error('Error disconnecting the Busgres client:', error)
     }
   }
+
+  return {
+    connect,
+    saveMessage,
+    receiveMessage,
+    disconnect
+  }
 }
 
 module.exports = {
