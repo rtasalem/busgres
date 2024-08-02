@@ -1,7 +1,7 @@
 const { Client } = require('pg')
 const connect = require('./connect')
 const disconnect = require('./disconnect')
-const receiveMessage = require('./receiveMessage')
+const receiveMessage = require('./receive-message')
 
 const BusgresClient = async (sbConnectionString, sbEntityName, sbEntityType, sbEntitySubscription, pgConfig) => {
   const pgClient = new Client(pgConfig)
