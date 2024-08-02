@@ -94,7 +94,7 @@ This package is licensed under the MIT License. Refer to the [LICENSE](https://g
 
 ## Feedback
 
-Feel free to reach out if you have any suggestions for improvement.
+Feel free to reach out if you have any suggestions for improvement. A [contributor's guide](https://github.com/rtasalem/busgres/blob/main/CONTRIBUTORS-GUIDE.md) is also available.
 
 ## Dependencies
 
