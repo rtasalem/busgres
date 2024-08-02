@@ -1,7 +1,9 @@
 const { ServiceBusClient } = require('@azure/service-bus')
+const { Client } = require('pg')
 
-const connect = async (pgClient, sbClient, sbConnectionString, sbEntityType, sbEntitySubscription, sbEntityName) => {
+const connect = async (pgConfig, sbClient, sbConnectionString, sbEntityType, sbEntitySubscription, sbEntityName) => {
   try {
+    const pgClient = new Client(pgConfig)
     await pgClient.connect()
     const sbClient = new ServiceBusClient(sbConnectionString)
 

@@ -1,4 +1,4 @@
-const { BusgresClient } = require('./app')
+const { BusgresClient } = require('./busgres-client')
 
 module.exports = {
   BusgresClient
