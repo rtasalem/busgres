@@ -93,8 +93,8 @@
 const { ServiceBusClient } = require('@azure/service-bus')
 const { Client } = require('pg')
 
-const BusgresClient = async (sbConnectionString, sbEntityName, sbEntityType, sbEntitySubscription, pgClient) => {
-  const pgClient = new Client(pgClient)
+const BusgresClient = async (sbConnectionString, sbEntityName, sbEntityType, sbEntitySubscription, pgConfig) => {
+  const pgClient = new Client(pgConfig)
 
   const connect = async () => {
     try {
@@ -134,9 +134,9 @@ const BusgresClient = async (sbConnectionString, sbEntityName, sbEntityType, sbE
     const receiver = sbClient.createReceiver(sbEntity)
 
     if (sbEntityType === 'queue') {
-      receiver = sbClient.createReceiver(sbEntityName)
+      const receiver = sbClient.createReceiver(sbEntityName)
     } else if (sbEntityType === 'topic' && sbEntitySubscription) {
-      receiver = sbClient.createReceiver(
+      const receiver = sbClient.createReceiver(
         sbEntityName,
         sbEntitySubscription
       )
@@ -156,7 +156,7 @@ const BusgresClient = async (sbConnectionString, sbEntityName, sbEntityType, sbE
         await receiver.completeMessage(message)
       },
       processError: async (error) => {
-        console.error(
+        throw new Error(
           'Error occurred while receiving message from Service Bus:',
           error
         )
@@ -173,4 +173,8 @@ const BusgresClient = async (sbConnectionString, sbEntityName, sbEntityType, sbE
       throw new Error('Error disconnecting the Busgres client:', error)
     }
   }
+}
+
+module.exports = {
+  BusgresClient
 }
