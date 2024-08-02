@@ -9,6 +9,7 @@ Branch naming is largely flexible. The only requirement is that it is relevent t
 - `refactor/`: Refactoring/cleaning up the codebase.
 - `docs/`: Creating or updating existing documentation.
 - `chore/`: Any small miscellaneous tasks.
+Once merged into the main branch, your working branch must be deleted.
 ## GitHub Workflows
 Two GitHub Actions have been configured to automate publishing new versions (stable and alpha) to the NPM registry:
 - [npm-publish-alpha.yaml](https://github.com/rtasalem/busgres/blob/main/.github/workflows/npm-publish-alpha.yaml)
