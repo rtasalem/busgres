@@ -8,11 +8,11 @@ Busgres
 
 noun
 
-An npm package that integrates service bus systems with PostgreSQL databases, allowing for the capture and storage of messages sent via a service bus into a PostgreSQL database.
+An npm package that integrates Azure Service Bus entities with PostgreSQL databases, allowing for the capture and storage of messages sent via a Service Bus into a PostgreSQL database.
 
-Example: "I thought my life was over, but then I found Busgres and realised the functionality of this one NPM module was all I needed to know true happiness."
+Example: "I thought my life was over, but then I found Busgres and realised using an NPM module to save Service Bus messages into a Postgres database was all I needed to know true happiness."
 
-f
+Etymology: A portmanteau of "Bus" (referring to Azure Service Bus) and "gres" (from PostgreSQL).
 
 ## Installation
 
