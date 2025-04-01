@@ -1,8 +1,9 @@
 {
   "name": "busgres",
-  "version": "3.0.12",
+  "version": "4.0.0",
   "description": "Busgres is an NPM package for receiving messages from Service Bus and saving them into a PostgreSQL database.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -23,5 +24,8 @@
   "dependencies": {
     "@azure/service-bus": "^7.9.4",
     "pg": "^8.11.5"
+  },
+  "devDependencies": {
+    "standard": "^17.1.2"
   }
 }
