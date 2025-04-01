@@ -1,8 +1,5 @@
 # Busgres
-
-![A sarcastic description of the Busgres NPM module](package-definition.png)
-
-[Busgres](https://www.npmjs.com/package/busgres) is a Node.js package that will receieve a message from an Azure Service Bus queue or topic and save it into a PostgreSQL database. It utilises the [`@azure/service-bus`](https://www.npmjs.com/package/@azure/service-bus) package for Service Bus integration and the [`pg` (node-postgres)](https://www.npmjs.com/package/pg) package for PostgreSQL connectivity.
+[Busgres](https://www.npmjs.com/package/busgres) is a Node.js package that will receieve a message from an Azure Service Bus queue or topic and save it into a PostgreSQL database.
 
 ## Installation
 
@@ -14,24 +11,23 @@ npm i busgres
 
 ## Usage
 
-`BusgresClient` set-up & configuration:
+Busgres set-up & configuration:
 
-```
-const { BusgresClient } = require('busgres`)
+```JavaScript
+import { startBusgres } from 'busgres'
 
-const sbConnectionString = process.env.CONNECTION_STRING
+const connectionString = process.env.CONNECTION_STRING
+const entityName = process.env.QUEUE
+const entityType = 'queue'
 
-const sbEntityName = process.env.QUEUE
-const sbEntityType = 'queue'
-
-const pgClient = {
+const dbConfig = {
   user: process.env.USERNAME,
   database: process.env.DATABASE,
   host: process.env.HOST,
   port: process.env.PORT
 }
 
-const bgClient = new BusgresClient(sbConnectionString, sbEntityName, sbEntityType, pgClient)
+const busgres = new startBusgres(dbConfig, connectionString, entityName, entityType)
 ```
 
 NOTE: If using topics, provide the topic name for `sbEntityName` in place of a queue name. Additionally, ensure `sbEntityType` is set to `'topic'` and that a value for `sbEntitySubscription` is also provided.
