@@ -1,8 +1,8 @@
 {
   "name": "busgres",
-  "version": "4.0.4",
+  "version": "4.0.5",
   "description": "Busgres is an NPM package for receiving messages from Service Bus and saving them into a PostgreSQL database.",
-  "main": "index.js",
+  "main": "app/index.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
