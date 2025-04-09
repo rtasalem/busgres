@@ -1,4 +1,4 @@
-export default async function stopBusgres (dbClient, messageClient, receiver) {
+export async function stopBusgres (dbClient, messageClient, receiver) {
   try {
     await dbClient.end()
     await receiver.close()
