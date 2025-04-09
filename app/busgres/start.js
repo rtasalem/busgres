@@ -1,8 +1,8 @@
-import establishDbConnection from '../database/connect.js'
-import saveMessage from '../database/save-message.js'
-import createReceiver from '../messaging/receiver.js'
+import { establishDbConnection } from '../database/connect.js'
+import { saveMessage } from '../database/save-message.js'
+import { createReceiver } from '../messaging/receiver.js'
 
-export async function startBusgres (messageConfig, dbConfig, tableName, columnNames) {
+async function startBusgres (messageConfig, dbConfig, tableName, columnNames) {
   const dbClient = await establishDbConnection(dbConfig)
   const { messageClient, receiver } = await createReceiver(
     messageConfig.connectionString,
@@ -22,4 +22,8 @@ export async function startBusgres (messageConfig, dbConfig, tableName, columnNa
   })
 
   return { dbClient, messageClient, receiver }
+}
+
+export {
+  startBusgres
 }

@@ -1,4 +1,4 @@
-export async function stopBusgres (dbClient, messageClient, receiver) {
+async function stopBusgres (dbClient, messageClient, receiver) {
   try {
     await dbClient.end()
     await receiver.close()
@@ -6,4 +6,8 @@ export async function stopBusgres (dbClient, messageClient, receiver) {
   } catch (error) {
     console.error('Error disconnecting from Busgres:', { cause: error })
   }
+}
+
+export {
+  stopBusgres
 }

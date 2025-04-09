@@ -1,4 +1,4 @@
-export default async function saveMessage (client, tableName, columnNames, message) {
+async function saveMessage (client, tableName, columnNames, message) {
   try {
     const messageContent = message.body
     const columns = columnNames.map((_, index) => `$${index + 1}`).join(', ')
@@ -9,4 +9,8 @@ export default async function saveMessage (client, tableName, columnNames, messa
   } catch (error) {
     console.error('Error saving message to database', { cause: error })
   }
+}
+
+export {
+  saveMessage
 }

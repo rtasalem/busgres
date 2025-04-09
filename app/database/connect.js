@@ -1,6 +1,6 @@
 import { Client } from 'pg'
 
-export default async function establishDbConnection (config) {
+async function establishDbConnection (config) {
   const client = new Client(config)
 
   try {
@@ -8,4 +8,8 @@ export default async function establishDbConnection (config) {
   } catch (error) {
     console.error('Error connecting to database:', { cause: error })
   }
+}
+
+export {
+  establishDbConnection
 }

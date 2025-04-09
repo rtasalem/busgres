@@ -1,6 +1,6 @@
 import { ServiceBusClient } from '@azure/service-bus'
 
-export default async function createReceiver (connectionString, entityName, entityType, subscriptionName) {
+async function createReceiver (connectionString, entityName, entityType, subscriptionName) {
   const client = new ServiceBusClient(connectionString)
 
   let receiver
@@ -14,4 +14,8 @@ export default async function createReceiver (connectionString, entityName, enti
   }
 
   return { client, receiver }
+}
+
+export {
+  createReceiver
 }
