@@ -19,7 +19,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@azure/service-bus": "^7.9.4",
-    "pg": "^8.11.5"
+    "@azure/service-bus": "7.9.4",
+    "pg": "8.11.5"
   }
 }
