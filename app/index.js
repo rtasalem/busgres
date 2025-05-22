@@ -1,5 +1,5 @@
-const { BusgresClient } = require('./busgres-client')
+import { BusgresClient } from './busgres-client'
 
-module.exports = {
+export {
   BusgresClient
 }

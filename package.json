@@ -1,11 +1,9 @@
 {
   "name": "busgres",
-  "version": "3.0.12",
+  "version": "3.1.0",
   "description": "Busgres is an NPM package for receiving messages from Service Bus and saving them into a PostgreSQL database.",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/rtasalem/busgres"

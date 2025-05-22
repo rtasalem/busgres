@@ -1,4 +1,4 @@
-name: Busgres NPM Publish Stable Version
+name: NPM Publish Stable Version
 
 on:
   push:

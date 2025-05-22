@@ -1,7 +1,7 @@
-const { ServiceBusClient } = require('@azure/service-bus')
-const { Client } = require('pg')
+import { ServiceBusClient } from '@azure/service-bus'
+import { Client } from 'pg'
 
-class BusgresClient {
+export class BusgresClient {
   constructor (sbConnectionString, sbEntityName, sbEntityType, sbEntitySubscription, pgClient) {
     this.sbConnectionString = sbConnectionString
     this.sbEntityName = sbEntityName
@@ -84,8 +84,4 @@ class BusgresClient {
       console.error('Error disconnecting:', error)
     }
   }
-}
-
-module.exports = {
-  BusgresClient
 }
