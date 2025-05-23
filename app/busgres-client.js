@@ -3,7 +3,7 @@ import { PostgresHandler } from './postgres-handler.js'
 import { MessagePersister } from './message-persister.js'
 
 export class BusgresClient {
-  constructor({serviceBusConfig, postgresConfig}) {
+  constructor({serviceBus, postgres}) {
     const { connectionString, entity, entityType, subscription } = serviceBusConfig
 
     this.serviceBusHandler = new ServiceBusHandler(
