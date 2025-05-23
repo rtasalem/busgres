@@ -10,9 +10,13 @@ export class ServiceBusHandler {
 
   getReceiver() {
     if (this.entityType === 'queue') {
-      this.client.createReceiver(this.entity)
+      return this.client.createReceiver(this.entity)
     } else if (this.entityType === 'topic') {
-      this.client.createReceiver(this.entity, this.subscription)
+      if (!this.subscription) {
+        throw new Error('Subscription is missing')
+      }
+
+      return this.client.createReceiver(this.entity, this.subscription)
     } else {
       throw new Error('Entity type must be "queue" or "topic"')
     }
