@@ -3,7 +3,7 @@ import { PostgresHandler } from './postgres-handler.js'
 import { MessagePersister } from './message-persister.js'
 
 export class BusgresClient {
-  constructor({serviceBus, postgres}) {
+  constructor ({ serviceBus, postgres }) {
     const { connectionString, entity, entityType, subscription } = serviceBus
 
     this.serviceBusHandler = new ServiceBusHandler(
@@ -18,7 +18,7 @@ export class BusgresClient {
     this.receiver = null
   }
 
-  async start(table, columnNames) {
+  async start (table, columnNames) {
     try {
       await this.postgresHandler.connect()
       this.receiver = this.serviceBusHandler.getReceiver()
@@ -29,20 +29,20 @@ export class BusgresClient {
           await this.receiver.completeMessage(message)
         },
         processError: async (error) => {
-          console.error(`Error receiving message from Service Bus: ${error}`)
+          console.error(`Error receiving message from Service Bus: ${error.message}`)
         }
       })
     } catch (error) {
-      throw new Error(`Error starting Busgres connection: ${error}`)
+      console.error(`Error starting Busgres connection: ${error.message}`)
     }
   }
 
-  async stop() {
+  async stop () {
     try {
       await this.postgresHandler.disconnect()
       await this.serviceBusHandler.disconnect()
     } catch (error) {
-      throw new Error(`Error stopping Busgres connection: ${error}`)
+      console.error(`Error stopping Busgres connection: ${error.message}`)
     }
   }
 }
