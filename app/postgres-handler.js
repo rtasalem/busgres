@@ -1,11 +1,12 @@
-import { Client } from 'pg'
+import pg from 'pg'
+const { Client } = pg
 
 export class PostgresHandler {
   constructor(config) {
     this.client = new Client(config)
   }
 
-  async connect () {
+  async connect() {
     try {
       await this.client.connect()
     } catch (error) {
@@ -13,7 +14,7 @@ export class PostgresHandler {
     }
   }
 
-  async disconnect () {
+  async disconnect() {
     try {
       await this.client.end()
     } catch (error) {
