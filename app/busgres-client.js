@@ -4,7 +4,15 @@ import { MessagePersister } from './message-persister.js'
 
 export class BusgresClient {
   constructor(serviceBusConfig, postgresConfig) {
-    this.serviceBusHandler = new ServiceBusHandler(serviceBusConfig)
+    const { connectionString, entity, entityType, subscription } = serviceBusConfig
+
+    this.serviceBusHandler = new ServiceBusHandler(
+      connectionString,
+      entity,
+      entityType,
+      subscription
+    )
+
     this.postgresHandler = new PostgresHandler(postgresConfig)
     this.messagePersister = new MessagePersister(this.postgresHandler)
     this.receiver = null
@@ -13,7 +21,7 @@ export class BusgresClient {
   async start(table, columnNames) {
     try {
       await this.postgresHandler.connect()
-      this.receiver = this.ServiceBusHandler.getReceiver()
+      this.receiver = this.serviceBusHandler.getReceiver()
 
       this.receiver.subscribe({
         processMessage: async (message) => {
