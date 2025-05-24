@@ -1,91 +1,48 @@
-const { ServiceBusClient } = require('@azure/service-bus')
-const { Client } = require('pg')
+import { ServiceBusHandler } from './service-bus-handler.js'
+import { PostgresHandler } from './postgres-handler.js'
+import { MessagePersister } from './message-persister.js'
 
-class BusgresClient {
-  constructor (sbConnectionString, sbEntityName, sbEntityType, sbEntitySubscription, pgClient) {
-    this.sbConnectionString = sbConnectionString
-    this.sbEntityName = sbEntityName
-    this.sbEntityType = sbEntityType
-    this.sbEntitySubscription = sbEntitySubscription || null
-    this.pgClient = new Client(pgClient)
+export class BusgresClient {
+  constructor ({ serviceBus, postgres }) {
+    const { connectionString, entity, entityType, subscription } = serviceBus
+
+    this.serviceBusHandler = new ServiceBusHandler(
+      connectionString,
+      entity,
+      entityType,
+      subscription
+    )
+
+    this.postgresHandler = new PostgresHandler(postgres)
+    this.messagePersister = new MessagePersister(this.postgresHandler)
+    this.receiver = null
   }
 
-  async connect () {
+  async start (table, columnNames) {
     try {
-      await this.pgClient.connect()
+      await this.postgresHandler.connect()
+      this.receiver = this.serviceBusHandler.getReceiver()
+
+      this.receiver.subscribe({
+        processMessage: async (message) => {
+          await this.messagePersister.save(table, columnNames, message.body)
+          await this.receiver.completeMessage(message)
+        },
+        processError: async (error) => {
+          console.error(`Error receiving message from Service Bus: ${error.message}`)
+        }
+      })
     } catch (error) {
-      console.error('Error connecting to the database:', error)
+      console.error(`Error starting Busgres connection: ${error.message}`)
     }
   }
 
-  async saveMessage (tableName, columnNames, message) {
+  async stop () {
     try {
-      const messageContent = message.body
-      const columns = columnNames
-        .map((column, index) => `$${index + 1}`)
-        .join(', ')
-      const query = `INSERT INTO ${tableName} (${columnNames.join(
-        ', '
-      )}) VALUES (${columns})`
-
-      const values = columnNames.map((column) => messageContent[column])
-
-      await this.pgClient.query(query, values)
-      console.log(
-        'The following message has been saved to the database:',
-        messageContent
-      )
+      await this.postgresHandler.disconnect()
+      await this.serviceBusHandler.disconnect()
     } catch (error) {
-      console.error('Error saving message to the database:', error)
+      console.error(`Error stopping Busgres connection: ${error.message}`)
     }
   }
-
-  async receiveMessage (tableName, columnNames) {
-    this.sbClient = new ServiceBusClient(this.sbConnectionString)
-    this.receiver = this.sbClient.createReceiver(this.sbEntity)
-
-    if (this.sbEntityType === 'queue') {
-      this.receiver = this.sbClient.createReceiver(this.sbEntityName)
-    } else if (this.sbEntityType === 'topic' && this.sbEntitySubscription) {
-      this.receiver = this.sbClient.createReceiver(
-        this.sbEntityName,
-        this.sbEntitySubscription
-      )
-    } else {
-      throw new Error(
-        'Invalid entity type (must be "queue" or "topic" OR missing subscription name for topic'
-      )
-    }
-
-    this.receiver.subscribe({
-      processMessage: async (message) => {
-        console.log(
-          'The following message was received from Service Bus:',
-          message.body
-        )
-        await this.saveMessage(tableName, columnNames, message)
-        await this.receiver.completeMessage(message)
-      },
-      processError: async (error) => {
-        console.error(
-          'Error occurred while receiving message from Service Bus:',
-          error
-        )
-      }
-    })
-  }
-
-  async disconnect () {
-    try {
-      await this.pgClient.end()
-      await this.receiver.close()
-      await this.sbClient.close()
-    } catch (error) {
-      console.error('Error disconnecting:', error)
-    }
-  }
-}
-
-module.exports = {
-  BusgresClient
 }

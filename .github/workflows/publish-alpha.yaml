@@ -1,4 +1,4 @@
-name: Busgres NPM Publish Alpha Version
+name: NPM Publish Alpha Version
 
 on:
   push:
@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [20.x]
+        node-version: [22.x]
     steps:
       - uses: actions/checkout@v4
 
