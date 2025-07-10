@@ -79,10 +79,9 @@ Feel free to reach out if you have any suggestions for improvement or further de
 
 ## Dependencies
 
-This package has a total of 2 dependencies on the following:
-
-- [`@azure/service-bus`](https://www.npmjs.com/package/@azure/service-bus)
-- [`pg`](https://www.npmjs.com/package/pg)
+This package has a total of 2 dependencies on the following:  
+[@azure/service-bus](https://www.npmjs.com/package/@azure/service-bus)  
+[pg](https://www.npmjs.com/package/pg)
 
 ## Author
 
