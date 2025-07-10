@@ -1,5 +1,5 @@
 # Busgres
-Service <u>BUS</u> + Post<u>GRES</u> = Busgres
+Service BUS + PostGRES = Busgres
 
 [Busgres](https://www.npmjs.com/package/busgres) is a Node.js package that will receive a message from an Azure Service Bus queue or topic and save it into a PostgreSQL database. It abstracts the [`@azure/service-bus`](https://www.npmjs.com/package/@azure/service-bus) and [`pg` (node-postgres)](https://www.npmjs.com/package/pg) packages for Service Bus and Postgres integration.
 
