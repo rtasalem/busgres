@@ -36,6 +36,12 @@ const busgresClient = new BusgresClient({
 
 const tableName = 'busgres'
 const columnNames = ['message']
+
+export {
+  busgresClient,
+  tableName,
+  columnNames
+}
 ```
 
 NOTE: If using topics, provide the topic name for `sbEntityName` in place of a queue name. Additionally, ensure `sbEntityType` is set to `'topic'` and that a value for `sbEntitySubscription` is also provided.  
