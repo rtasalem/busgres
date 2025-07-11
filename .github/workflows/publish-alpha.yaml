@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  publish:
+  publish-alpha:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,7 +26,7 @@ jobs:
           BRANCH_NAME=${GITHUB_REF##*/}
           CURRENT_VERSION=$(node -p "require('./package.json').version")
           SANITISED_BRANCH_NAME=$(echo "$BRANCH_NAME" | tr '/' '-')
-          TIMESTAMP=$(TZ='Europe/London' date +'%Y-%m-%d-%H%M%S')
+          TIMESTAMP=$(TZ='Europe/London' date +'%d-%m-%Y-%H%M%S')
           ALPHA_VERSION="${CURRENT_VERSION}-alpha.${SANITISED_BRANCH_NAME}.${TIMESTAMP}"
           npm version --no-git-tag-version $ALPHA_VERSION
           echo "Alpha version: $ALPHA_VERSION"

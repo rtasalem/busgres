@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  publish:
+  publish-stable:
     runs-on: ubuntu-latest
 
     steps:
