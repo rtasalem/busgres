@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  publish-alpha:
+  npm-publish-alpha:
     runs-on: ubuntu-latest
 
     steps:
