@@ -17,9 +17,11 @@ jobs:
         with:
           node-version: 'lts/*'
           cache: 'npm'
-      - run: npm ci
 
-      - name: Increment version
+      - name: Clean install dependencies
+        run: npm ci
+
+      - name: Increment version with alpha tag
         run: |
           BRANCH_NAME=${GITHUB_REF##*/}
           CURRENT_VERSION=$(node -p "require('./package.json').version")
