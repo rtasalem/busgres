@@ -1,4 +1,4 @@
-name: NPM Publish Alpha Version
+name: NPM Publish Alpha
 
 on:
   push:
@@ -6,30 +6,30 @@ on:
       - main
 
 jobs:
-  publish:
+  npm-publish-alpha:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [22.x]
+
     steps:
       - uses: actions/checkout@v4
 
       - name: Use Node.js LTS
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
-      - run: npm ci
+          node-version: 'lts/*'
+          cache: 'npm'
 
-      - name: Bump version (alpha)
+      - name: Clean install dependencies
+        run: npm ci
+
+      - name: Increment version with alpha tag
         run: |
           BRANCH_NAME=${GITHUB_REF##*/}
-          if [ "$BRANCH_NAME" != "main" ]; then
-            CURRENT_VERSION=$(node -p "require('./package.json').version")
-            ALPHA_VERSION="${CURRENT_VERSION}-alpha.$(date +%s)"
-            npm version --no-git-tag-version $ALPHA_VERSION
-            echo "Alpha version: $ALPHA_VERSION"
-          fi
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          SANITISED_BRANCH_NAME=$(echo "$BRANCH_NAME" | tr '/' '-')
+          TIMESTAMP=$(TZ='Europe/London' date +'%d-%m-%Y-%H%M%S')
+          ALPHA_VERSION="${CURRENT_VERSION}-alpha.${SANITISED_BRANCH_NAME}.${TIMESTAMP}"
+          npm version --no-git-tag-version $ALPHA_VERSION
+          echo "Alpha version: $ALPHA_VERSION"
 
       - name: Authenticate to NPM
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_ACCESS_TOKEN }}" > ~/.npmrc

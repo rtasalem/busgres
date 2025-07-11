@@ -1,36 +1,24 @@
-name: NPM Publish Stable Version
+name: NPM Publish Stable
 
 on:
-  pull_request:
-    types:
-      - closed
+  push:
     branches:
       - main
 
 jobs:
-  publish:
+  npm-publish-stable:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [20.x]
+
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up Git User
-        run: |
-          git config --global user.email "github-actions@github.com"
-          git config --global user.name "GitHub Actions"
 
       - name: Use Node.js LTS
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm ci
+          node-version: 'lts/*'
 
-      - name: Bump Version to NPM
-        run: |
-          npx standard-version
-          echo "New version: $(node -p "require('./package.json').version")"
+      - name: Clean install dependencies
+        run: npm ci
       
       - name: Authenticate to NPM
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_ACCESS_TOKEN }}" > ~/.npmrc
