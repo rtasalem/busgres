@@ -1,4 +1,4 @@
-name: NPM Publish Stable Version
+name: NPM Publish Stable
 
 on:
   pull_request:
@@ -26,11 +26,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
-
-      - name: Bump Version to NPM
-        run: |
-          npx standard-version
-          echo "New version: $(node -p "require('./package.json').version")"
       
       - name: Authenticate to NPM
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_ACCESS_TOKEN }}" > ~/.npmrc
